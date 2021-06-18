@@ -4,6 +4,7 @@ const inventory = require('./inventory');
 const cors = require('cors');
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 /**
@@ -59,13 +60,28 @@ app.get('/product/:id', (req, res, next) => {
     });
 });
 
-app.get('/product/:id', (req, res, next) => {
-    inventory.SearchProductByID({ id: req.params.id }, (err, product) => {
+app.post('/product', (req, res, next) => {
+    const product = req.body
+    inventory.addProduct(product, (err, returnedProduct) => {
         if (err) {
             console.error(err);
             res.status(500).send({ error: 'something failed :(' });
         } else {
-            res.json(product);
+            res.status(201).json(returnedProduct);
+        }
+    });
+});
+
+app.patch('/product/:id', (req, res, next) => {
+    const product = req.body
+    product.id = parseInt(req.params.id);
+
+    inventory.updateInventory(product, (err, returnedProduct) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({ error: 'something failed :(' });
+        } else {
+            res.status(201).json(returnedProduct);
         }
     });
 });

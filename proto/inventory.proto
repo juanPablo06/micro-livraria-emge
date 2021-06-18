@@ -3,6 +3,8 @@ syntax = "proto3";
 service InventoryService {
     rpc SearchAllProducts(Empty) returns (ProductsResponse) {}
     rpc SearchProductByID(Payload) returns (ProductResponse) {}
+    rpc addProduct(ProductResponse) returns (ProductResponse) {}
+    rpc UpdateInventory(ProductResponse) returns (ProductResponse) {}
 }
 
 message Empty{}
